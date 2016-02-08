@@ -33,7 +33,6 @@ var rootTemplate = template.Must(template.New("root").Parse(`
 <head>
 <meta charset="utf-8" />
 <script language="javascript" type="text/javascript">
-//var wsUri = "ws://echo.websocket.org/"; 
 var wsUri = "ws://{{.}}/socket"; 
 var output;
 var input;
@@ -58,21 +57,16 @@ function testWebSocket() {
   websocket.onerror = function(evt) { onError(evt) }; 
 }
 function onOpen(evt) {
-  writeToScreen("CONNECTED");
-  //doSend("WebSocket rocks");
+  writeToScreen("Waiting for partner...");
 }
 function onClose(evt) {
-  writeToScreen("DISCONNECTED");
+  writeToScreen("Partner left :(");
 }
 function onMessage(evt) {
-  writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
-  //websocket.close();
-}
-function onError(evt) {
-  writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data); 
+  writeToScreen('<span style="color: blue;">Partner: ' + evt.data+'</span>');
 }
 function doSend(message) {
-  writeToScreen("SENT: " + message);
+  writeToScreen("You: " + message);
   websocket.send(message);
 }
 function writeToScreen(message) {
@@ -108,8 +102,6 @@ func socketHandler(ws *websocket.Conn) {
 var partner = make(chan io.ReadWriteCloser)
 
 func match(c io.ReadWriteCloser) {
-	fmt.Fprint(c, "Waiting for a partner...")
-
 	select {
 	case partner <- c:
 		// now handled by the other goroutine
@@ -128,7 +120,7 @@ func chat(a, b io.ReadWriteCloser) {
 	go cp(b, a, errc)
 
 	if err := <-errc; err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 
 	a.Close()
