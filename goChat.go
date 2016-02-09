@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"golang.org/x/net/websocket"
+	"github.com/ndey96/goChat/Godeps/_workspace/src/golang.org/x/net/websocket"
 	"html/template"
 	"io"
 	"log"
