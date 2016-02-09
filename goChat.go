@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/ndey96/goChat/Godeps/_workspace/src/golang.org/x/net/websocket"
+	//"github.com/ndey96/goChat/Godeps/_workspace/src/golang.org/x/net/websocket"
 	"html/template"
 	"io"
 	"log"
+	"net"
 	"net/http"
 	"os"
 )
@@ -13,11 +14,17 @@ import (
 func main() {
 	http.HandleFunc("/", rootHandler)
 	http.Handle("/socket", websocket.Handler(socketHandler))
-
-	err := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
-
-	if err != nil {
+	errh := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
+	l, errn := net.Listen("tcp", ":"+os.Getenv("PORT"))
+	if errh != nil {
 		log.Fatal(err)
+	}
+	for {
+		c, err := l.Accept()
+		if err != nil {
+			log.Fatal(err)
+		}
+		go match(c)
 	}
 }
 
