@@ -22,7 +22,7 @@ func main() {
 }
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
-	rootTemplate.Execute(w, LISTEN_ADDR)
+	rootTemplate.Execute(w, ":"+os.Getenv("PORT"))
 }
 
 var rootTemplate = template.Must(template.New("root").Parse(`
