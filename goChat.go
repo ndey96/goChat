@@ -11,8 +11,9 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", rootHandler)
-	http.Handle("/socket", websocket.Handler(socketHandler))
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", rootHandler)
+	mux.Handle("/socket", websocket.Handler(socketHandler))
 
 	err := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 
