@@ -45,8 +45,10 @@ function init() {
   testWebSocket();
 }
 function sendClickHandler() {
-  doSend(input.value);
-  input.value = '';
+	if input.value !== '' {
+		doSend(input.value);
+  		input.value = '';
+	}
 }
 function testWebSocket() {
   websocket = new WebSocket(wsUri);
@@ -76,7 +78,7 @@ function writeToScreen(message) {
 }
 window.addEventListener("load", init, false);
 </script>
-<h2>WebSocket Test</h2>
+<h2>GoChat</h2>
 <input type="text" id="input" /><input type="button" id="send" value="Send" />
 <div id="output"></div>
 </html>
