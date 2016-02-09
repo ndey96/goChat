@@ -45,7 +45,7 @@ function init() {
   testWebSocket();
 }
 function sendClickHandler() {
-	if input.value != '' {
+	if (input.value != '') {
 		doSend(input.value);
   		input.value = '';
 	}
