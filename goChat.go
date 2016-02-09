@@ -13,11 +13,14 @@ import (
 
 func main() {
 	http.HandleFunc("/", rootHandler)
-	http.Handle("/socket", websocket.Handler(socketHandler))
+	//http.Handle("/socket", websocket.Handler(socketHandler))
 	errh := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 	l, errn := net.Listen("tcp", ":"+os.Getenv("PORT"))
+	if errn != nil {
+		log.Fatal(errn)
+	}
 	if errh != nil {
-		log.Fatal(err)
+		log.Fatal(errh)
 	}
 	for {
 		c, err := l.Accept()
@@ -91,21 +94,21 @@ window.addEventListener("load", init, false);
 </html>
   `))
 
-type socket struct {
-	io.ReadWriter
-	done chan bool
-}
+// type socket struct {
+// 	io.ReadWriter
+// 	done chan bool
+// }
 
-func (s socket) Close() error {
-	s.done <- true
-	return nil
-}
+// func (s socket) Close() error {
+// 	s.done <- true
+// 	return nil
+// }
 
-func socketHandler(ws *websocket.Conn) {
-	s := socket{ws, make(chan bool)}
-	go match(s)
-	<-s.done
-}
+// func socketHandler(ws *websocket.Conn) {
+// 	s := socket{ws, make(chan bool)}
+// 	go match(s)
+// 	<-s.done
+// }
 
 var partner = make(chan io.ReadWriteCloser)
 

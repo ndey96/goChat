@@ -4,10 +4,5 @@
 	"Packages": [
 		"./..."
 	],
-	"Deps": [
-		{
-			"ImportPath": "golang.org/x/net/websocket",
-			"Rev": "d9558e5c97f85372afee28cf2b6059d7d3818919"
-		}
-	]
+	"Deps": []
 }
