@@ -7,15 +7,14 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 )
-
-const LISTEN_ADDR = "localhost:5000"
 
 func main() {
 	http.HandleFunc("/", rootHandler)
 	http.Handle("/socket", websocket.Handler(socketHandler))
 
-	err := http.ListenAndServe(LISTEN_ADDR, nil)
+	err := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 
 	if err != nil {
 		log.Fatal(err)
